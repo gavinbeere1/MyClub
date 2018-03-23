@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+ <title>Welcome Security with Spring Boot!</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">MyClub</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+    <form class="navbar-form navbar-left" action="/action_page.php">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" name="search"></input>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</nav>
+ </head>
+  <p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+     <div align="center">
+ 
+  
+ </div>
+<form th:action="@{/logout}" method="post">
+         <input type="submit" value="Sign Out"/>
+     </form>
+<body>
+
+ <p id="demo"></p>
+
+
+<div>
+<center>
+	<h3>Player</h3>
+	<h4>Name: <text th:text="${player.userName}" /> </h4>
+	<h4>Phone: <text th:text="${player.phone}" /> </h4>
+	<h4>Address: <text th:text="${player.address}" /> </h4>
+	<h4>Currently part of a team: <text th:text="${player.position}" /> </h4>
+	
+
+ 	
+ 	       	<a onclick="ConfirmAlert();" th:href="@{/acceptplayer/{id}(id=${player.userName})}"><span>Accept Player</span></a>
+ 	      <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+ 	
+	   <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
+	   
+</center>	   
+	   
+	  
+
+
+	
+</div>
+<script>
+function ConfirmAlert() {
+    var txt;
+    if (confirm("Yes or No!")) {
+        txt = "You pressed OK!";
+    } else {
+        txt = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = txt;
+}
+</script>
+</body>
+</html>

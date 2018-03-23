@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+ <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+  <title>Spring Boot - DELETE-UPDATE AJAX Example</title>
+      
+  <head>
+ <title>Welcome Security with Spring Boot!</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">MyClub</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+    <form class="navbar-form navbar-left" action="/action_page.php">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" name="search"></input>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</nav>
+ </head>
+  <p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+     <div align="center">
+ 
+    <a> <img src="images/logo.jpg"> </img></a>
+ </div>
+ 
+<body>
+<div class="container">
+		<h2>All Teams</h2>
+		<div class="row col-md-7 ">
+			<div style="margin-bottom:20px; padding:10px; background-color:#336699; color:white;">
+		  	<p>Type some text to search the table for <strong>Id</strong>, <strong>Name</strong>, <strong>Address</strong>, <strong>Level</strong>:</p>  
+		  	<input class="form-control" id="inputFilter" type="text" placeholder="Search.." />
+		  	</div>
+			<table id="customerTable" class="table table-bordered table-hover table-responsive">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Address</th>
+						<th>Level</th>					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+ <script type="text/javascript">
+
+  $(document).ready(function() {
+		
+		// DO GET
+		$.ajax({
+			type : "GET",
+			url : "/all",
+			success: function(result){
+				$.each(result, function(i, team){
+					
+					var customerRow = ' <tr>' +
+										'<td>' + team.id + '</td>' +
+										'<td>' + team.teamName.toUpperCase() + '</td>' +
+										'<td>' + team.teamAddress + '</td>' +
+										'<td>' + team.level + '</td>' +
+										'<td><a href="/viewteam/'+team.id+'">View Team</a></td>' +									  '</tr>';
+					
+					$('#customerTable tbody').append(customerRow);
+				
+		        });
+				
+				$( "#customerTable tbody tr:odd" ).addClass("info");
+				$( "#customerTable tbody tr:even" ).addClass("success");
+			},
+			error : function(e) {
+				alert("ERROR: ", e);
+				console.log("ERROR: ", e);
+			}
+		});
+		
+		// do Filter on View
+		$("#inputFilter").on("keyup", function() {
+		    var inputValue = $(this).val().toLowerCase();
+		    $("#customerTable tr").filter(function() {
+		    	$(this).toggle($(this).text().toLowerCase().indexOf(inputValue) > -1)
+		    });
+		});
+	})
+
+  </script>
+</body>
+</html>

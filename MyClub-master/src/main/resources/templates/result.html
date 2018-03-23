@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+ 
+ <title>Welcome Security with Spring Boot!</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">MyClub</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+    <form class="navbar-form navbar-left" action="/action_page.php">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" name="search"></input>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</nav>
+ </head>
+  <p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+     <div align="center">
+ 
+    <a> <img src="images/logo.jpg"> </img></a>
+ </div>
+<body>
+>
+
+<center>
+	
+	
+
+	
+	   
+	   
+	   
+	  
+	</center>   
+	
+	<center>
+<td>
+<h4>Player: <h4 th:text="${username}" name="username"/> </h4>
+	<h4>Update Position</h4>
+
+
+ <form method="POST" th:object="${PlayerInfo}" action="/updatePlayer" >
+          <table>
+          
+			<tr>
+				<td>Preferred Position:</td>
+				
+				<td><select name="Position" th:field="*{position}" >
+  					<option value="TightHead">TightHead (1)</option>
+  					<option value="Hooker">Hooker (2)</option>
+  					<option value="LooseHead">LooseHead (3)</option>
+  					<option value="SecondRow">Second Row (4/5)</option>
+  					<option value="BlindSideFlanker">Blindside Flanker(6)</option>
+  					<option value="OpenSideFlanker">Openside Flanker(7)</option>
+  					<option value="Eight">Eight(8)</option>
+  					<option value="ScrumHalf">ScrumHalf(9)</option>
+  					<option value="OutHalf">OutHalf(10)</option>
+  					<option value="LeftWing">Left Wing(11)</option>
+  					<option value="InsideCentre">Inside Centre (12)</option>
+   					<option value="OutsideCentre">Outside Centre (13)</option>
+  					<option value="RightWing">Right Wing (14)</option>
+                    <option value="FullBack">Fullback (15)</option>
+
+				</select></td>
+			</tr>
+			<tr> 
+			<td>Bio:</td>
+			<div>
+    <span contenteditable="true">
+			<td><input type="textarea" rows="4" cols="50" th:field="*{bio}" width="40000px"/></td>
+			</span>
+</div>
+			</tr>
+			<tr>
+				<td></td><td><button type="submit">Submit</button></td>
+			</tr>
+		</table>
+    </form> 
+	
+	</td>
+	
+	
+	          <a style="color:blue" th:href="@{/home}">HomeScreen!</a>
+	
+	</center>
+
+</body>
+</html>
+

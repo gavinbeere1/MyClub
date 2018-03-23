@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+ <head>
+ <title>Welcome Security with Spring Boot!</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">MyClub</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+    <form class="navbar-form navbar-left" action="/action_page.php">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" name="search"></input>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</nav>
+ </head>
+  <p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+<form th:action="@{/logout}" method="post">
+         <input type="submit" value="Sign Out"/>
+     </form>
+<center>
+<body>
+
+ <div class="container">
+ 
+ 
+ 
+ 	<h2> Players List </h2>
+ 	
+ 	<table class = "table table-striped">
+ 	
+ 	<tr>
+ 	<th> Id </th>
+ 	<th> First Name </th>
+ 	<th> Last Name </th>
+ 	<th> Email </th>
+ 	<th> User Type</th>
+ 	
+ 	
+ 	</tr>
+ 	
+ 	
+ 	<tr th:each="userLogin : ${players}">
+ 	<td th:text="${userLogin.id}"></td>
+ 	<td th:text="${userLogin.firstName}"></td>
+ 	<td th:text="${userLogin.lastName}"></td>
+ 	<td th:text="${userLogin.userName}"></td>
+ 
+ 	 	
+ 
+ 	<td><div><button onclick="myFunction()">Test JavaScript</button>  </div></td>
+ 	<td>
+ 	<a th:href="@{/deleteplayer/{id}(id=${userLogin.id})}"><span>Delet‌​e</span></a>
+ 	</td>
+ 	
+ 	<td>
+ 	<a th:href="@{/viewplayer/{id}(id=${userLogin.id})}"><span>View Player</span></a>
+ 	</td>
+ 	
+ 	   
+ 	
+ 	
+ 	</tr>
+ 	
+
+
+ 	
+ 	</table>
+ <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
+ <p id="demo"></p>
+ 
+  <div id="map" style="width:400px;height:400px;"></div>
+ 
+ 
+ </div>
+ <br />
+	          <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
+ 
+ 
+<script>
+
+function myFunction() {
+	var mapOptions = {
+		    center: new google.maps.LatLng(53.3498, -6.266155),
+		    zoom: 10,
+		    mapTypeId: google.maps.MapTypeId.HYBRID
+		}
+		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+}
+
+</script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZUo9_fCjdFCxU8vEgOTHecHyz3B9hOOY"></script>
+
+
+
+</body>
+</center>
+</html>

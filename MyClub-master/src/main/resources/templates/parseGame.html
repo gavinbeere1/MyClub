@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Insert title here</title>
+</head>
+<body>
+<p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+<h1> Parse Games</h1>
+
+<form action="#" th:action="@{/parsegames}"  method="post">
+
+<td><button type="submit" >Parse Games</button></td>
+</form>
+   <a style="color:blue" th:href="@{/home}">HomeScreen!</a>
+</body>
+</html>

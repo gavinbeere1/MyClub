@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Back up DB</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<object align="middle">
+<body style="background-color:powderblue;">
+<p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+<center>
+<td>
+
+	<h3>Register League</h3>
+	
+	
+	
+	
+	<form action="#" th:action="@{/registerleague}" th:object="${league}" method="post">
+		<table>
+		<tr>
+		<td>Season:</td>
+				<td><input type="text" th:field="*{season}" /></td>
+			</tr>
+			<tr>
+				<td>leagueName:</td>
+				<td><input type="text" th:field="*{leagueName}" /></td>
+			</tr>
+			<tr>
+				<td>Division:</td>
+				<td><input type="text" th:field="*{division}" /></td>
+			</tr>
+			
+			
+		
+			<tr>
+				<td></td><td><button type="submit">Submit</button></td>
+			</tr>
+	
+		</table>
+	</form>
+	
+	</td>
+	</center>
+</body>
+
+</object>
+   <a style="color:blue" th:href="@{/home}">HomeScreen!</a>
+
+</html>
+

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Team</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+	<h3>Registered</h3>
+	<h4>Team: 
+				 <h4 th:text="${teamName}" /> </h4>
+	
+    <a style="color:blue" th:href="@{/home}">HomeScreen!</a>
+	
+</body>
+</html>

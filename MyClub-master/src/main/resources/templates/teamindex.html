@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>FYP</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+<td>
+
+	<h3>Register your Team</h3>
+	
+	
+	
+	
+	<form action="#" th:action="@{/team}" th:object="${team}" method="post">
+		<table>
+		<tr>
+		<td>Team name:</td>
+				<td><input type="text" th:field="*{teamName}" /></td>
+			</tr>
+			<tr>
+				<td>Club Address:</td>
+				<td><input type="text" th:field="*{teamAddress}" /></td>
+			</tr>
+			<tr>
+				<td> UBL Level:</td>
+			
+				
+					<td><select name="AIL league" th:field="*{level}" >
+  					<option value="1a">1a</option>
+  					<option value="1b">1b</option>
+  					<option value="2a">2a</option>
+  					<option value="2b">2b</option>
+  					<option value="2c">2c</option>
+				</select></td>
+			</tr>
+			<tr>
+		<td><button type="submit">Submit</button></td>
+		</tr>
+		</table>
+	</form>
+	
+	</td>
+	   <a style="color:blue" th:href="@{/home}">HomeScreen!</a>
+</body>
+</html>

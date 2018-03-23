@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+ <title>Welcome Security with Spring Boot!</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">MyClub</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+    <form class="navbar-form navbar-left" action="/action_page.php">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" name="search"></input>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</nav>
+ </head>
+  <p th:inline="text">
+      You are logged as: <b>[[${#httpServletRequest.remoteUser}]]</b>
+      (<a href="/logout">logout</a>)
+    </p>
+     <div align="center">
+ 
+    <a> <img src="images/logo.jpg"> </img></a>
+ </div>
+	
+<center>
+<body>
+
+ <div class="container">
+ 
+ 
+ 
+ 	<h3 style="color:blue">Notifications</h3>
+ 	
+ 
+ 	
+<table class = "table table-striped" id="teamTable">
+ 	
+ 	<tr>
+ 	
+ 	<th> User </th>
+ 	<th> Message Status </th>
+ 	
+ 	</tr>
+ 	
+ 	<tr th:each="inbox : ${inboxs}">
+ 	<td th:text="${inbox.senderName}"></td>
+ 	<td th:text="${inbox.status}"></td>
+ 	 
+ 	 <td>
+ 	<a th:href="@{/viewsender/{name}(name=${inbox.senderName})}"><span>View Player</span></a>
+ 	</td>
+	<td></td>
+	<td></td>
+ 	 <td>
+ 	<a th:href="@{/deletemessage/{name}(name=${inbox.status})}" th:if="${not #strings.startsWith(inbox.status, 'D')}" ><span>Decline Request</span></a>
+ 	</td>
+ 	
+ 	
+ 	
+ 
+ 	</tr>
+ 	</table>
+ 
+ </div>
+ 
+ <br />
+			<a style="color:blue" th:href="@{/showallmessages}"><span>Show Seen Notifications</span></a>
+	<br /><br />
+	          <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>			
+
+
+</body>
+</center>
+</html>
