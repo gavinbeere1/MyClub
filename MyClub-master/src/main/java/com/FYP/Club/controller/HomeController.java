@@ -70,7 +70,9 @@ import com.FYP.Club.repository.PlayerInfoRepository;
 import com.FYP.Club.repository.RoleRepository;
 import com.FYP.Club.repository.TeamRepository;
 import com.FYP.Club.repository.UserLoginRepository;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+@JsonSerialize
 @SessionAttributes("username")
 @Controller
 public class HomeController {
@@ -615,7 +617,6 @@ public class HomeController {
 	   return "players2";
 
    }
-   
    @RequestMapping(value="/searchP", method=RequestMethod.GET)
    @ResponseBody
    public List<UserLogin> getResource2()
@@ -623,10 +624,10 @@ public class HomeController {
 	   String type = "Player";	  
 	 
 	   ArrayList<UserLogin> cueList = userRepository.findByUserType(type);	   
-
+//	   System.out.print("*********" + cueList.size());
 
 //	   List<UserLogin> cueList = cueList1.Cast<UserLogin>().ToList();
-
+//	   responseGenerator.setJSONData(data.toMap());
 	    return cueList;
 	   
    }
@@ -716,6 +717,9 @@ public class HomeController {
 			               
 			               //searches db for team with the name then adds the team to the game homeside
 			               Team team = teamRepository.findByTeamName(result3);
+			               
+			            	
+			             
 			               game.setHomeSide(team);
 			               
 			               
@@ -728,15 +732,17 @@ public class HomeController {
 			              
 
 			          	League league = leagueRepository.findByDivision(result2);
-			          	
+			        
+			   
 
 			          	 league.addTeam(team);
 			          	 league.addTeam(team2);
 			          	 
 			          	 league.addGame(game);
 			          	 leagueRepository.save(league);
+			    
 			          	 
-
+			    
 			          	 
 
 
@@ -834,9 +840,12 @@ public class HomeController {
 			
 		UserLogin user = userRepository.findByUserName(username);
 		
+
+		
 		user.setPlayerinfo(playerinfo);
+		
 		userRepository.save(user);
-	
+		
 		SecurityContextHolder.getContext().setAuthentication(null);
 		
 	
@@ -894,6 +903,27 @@ public class HomeController {
 		
 		
 		return "inbox";
+	}
+	
+	@RequestMapping(value="/showallOutboxmessages", method=RequestMethod.GET)
+	public String PlayersOutbox2(Model model)
+	{
+
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+//	      UserLogin user = userRepository.findByUserName(email);
+
+	      
+	      //only shows pending messages.
+	      ArrayList<Outbox> outboxs = (ArrayList<Outbox>) oR.findBySenderName(email);
+
+		  
+	      model.addAttribute("outboxs", outboxs);
+		  
+		
+		
+		return "outbox2";
 	}
 
 	//////BELOW ARE PLAYERS OUTBOX
@@ -1015,7 +1045,15 @@ public class HomeController {
 		   return "welcome";
 	   }
 
-	
+//	   @RequestMapping(value="/registeruser", method=RequestMethod.GET)
+//		public String index(Model model) {
+//			SecurityContextHolder.getContext().setAuthentication(null);
+//			
+//			model.addAttribute("user", new UserLogin()); //add model to view
+//
+//			 return "index";
+//
+//		}
 
 	@RequestMapping(value = "/registeruser", method = RequestMethod.POST)
 	public String addNewPost(@Valid UserLogin user, Model model, BindingResult errors) {
@@ -1058,8 +1096,6 @@ public class HomeController {
 		if (user.getUserType().equals("Manager"))
 		{
 	
-			
-			
 //            Role roley = roleRepository.findOne(role2);
 			
 			user.addRole(role2);
@@ -1099,5 +1135,381 @@ public class HomeController {
 		return result;
 		
 	}
+	
+	@RequestMapping(value="/freePositions", method=RequestMethod.GET)
+	public String PlayersPositions(Model model)
+	{
+		 Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); // getName() is springs way to get the logged in user name, which in my case is their email (i.e what they login with)
+
+	      UserLogin user = userRepository.findByUserName(email);
+	      
+	      String position = user.getPlayerinfo().getPosition();
+	      
+	      
+	     
+	      
+//		int forwards = 13;
+//		int backs = 10;
+		
+//		int frontRow = 6;
+//		int locks = 3;
+//		int backrow = 4;
+//		int halfBacks=3;
+//		int centres=4;
+//		int backThree=5;
+		
+		int wingers = 3;
+		int fullback = 1;
+		int centres = 3;
+		int outhalf = 1;
+		int scrumhalf =1;
+		int props = 4;
+		int hooker = 1;
+		int secondRow = 3;
+		int backrow = 5;
+//		int fullback = -1;
+//		int centres = -3;
+//		int outhalf = -1;
+//		int scrumhalf =-1;
+//		int props = -4;
+//		int hooker = -1;
+//		int secondRow = -3;
+//		int backrow = -5;
+		
+
+		ArrayList<Team> matchedTeams = new ArrayList<Team>();
+			
+		ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
+		   
+		  for (Team t : teams)
+		  {
+			  
+			  /// Going through each team
+			  
+			  for(UserLogin ul : t.getUserLogins())
+			  {
+				  if(ul.getPlayerinfo().getPosition().equals("RightWing"))
+				  {
+				    wingers--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("LeftWing"))
+				  {
+				    wingers--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("FullBack"))
+				  {
+				    fullback--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("OutsideCentre"))
+				  {
+				    centres--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("InsideCentre"))
+				  {
+				    centres--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("OutHalf"))
+				  {
+				   outhalf--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("ScrumHalf"))
+				  {
+				    scrumhalf--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("Eight"))
+				  {
+				    backrow--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("OpenSideFlanker"))
+				  {
+				    backrow--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("BlindSideFlanker"))
+				  {
+				    backrow--;
+				  } 
+				  if(ul.getPlayerinfo().getPosition().equals("SecondRow"))  
+				  {
+					secondRow--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("LooseHead"))  
+				  {
+					props--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("Hooker"))  
+				  {
+					hooker--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("TightHead"))  
+				  {
+					props--;
+				  }
+				  
+			  }//end of loop searching through players on a team
+			  
+			  if (  fullback >= 0 && position.equals("FullBack") )
+			  {
+				  
+				  matchedTeams.add(t);
+			  }
+			  if (wingers >= 0 && position.equals("RightWing")  || position.equals("LeftWing"))
+			  {
+				  System.out.println("TTTTTTTTTTTTTTTTTTTTTEST TEAM : " + wingers + " " + position);
+				  matchedTeams.add(t);
+			  }
+			  if (  centres >= 0 && (position.equals("InsideCentre") || position.equals("OutsideCentre") ))
+			  {
+				  matchedTeams.add(t);
+			  }
+			  if (  outhalf >= 0 && position.equals("OutHalf") )
+			  {
+				  matchedTeams.add(t);
+			  }
+			  if (  scrumhalf >= 0 && position.equals("ScrumHalf") )
+			  {
+				  matchedTeams.add(t);
+			  }
+			  if (  backrow >= 0 && (position.equals("Eight") || position.equals("BlindSideFlanker") || position.equals("OpenSideFlanker") ))
+			  {
+				  matchedTeams.add(t);
+			  }
+			  if ( secondRow >= 0 && position.equals("SecondRow") )
+			  {
+				  matchedTeams.add(t);
+			  }
+			  if (  props >= 0 && (position.equals("TightHead") || position.equals("LooseHead"))  )
+			  {
+				  matchedTeams.add(t);
+			  }
+			  if (  hooker >= 0 && position.equals("Hooker") )
+			  {
+				  matchedTeams.add(t);
+			  }  
+			/// Going through each team
+			  
+		  }
+		 
+		  
+		  ////////////////////Codes getting to here at least.
+
+	
+		  
+	      model.addAttribute("teams", matchedTeams);
+		  
+
+		return "teams";
+	}
+	
+	@RequestMapping(value="/viewpositioninfo", method=RequestMethod.GET)
+	public String ManagersTeamPositions(Model model)
+	{
+		int wingers = 3;
+		int fullback = 1;
+		int centres = 3;
+		int outhalf = 1;
+		int scrumhalf =1;
+		int props = 4;
+		int hooker = 1;
+		int secondRow = 3;
+		int backrow = 5;
+		
+		
+		 Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+	      String email = loggedInUser.getName(); 
+
+	      UserLogin user = userRepository.findByUserName(email);
+	      String teamName = "";
+	      
+	      /////////////////FINDS THE TEAM
+	      ArrayList<Team> teams = (ArrayList<Team>) teamRepository.findAll();
+		   
+		  for (Team t : teams)
+		  {
+			  for(UserLogin ul : t.getUserLogins())
+			  {
+				  if(ul.getUserName().equals(email))
+				  {
+				     teamName = t.getTeamName();
+				     break;
+
+				  }
+			  }
+		  }
+		  
+		  System.out.println("T: " + teamName);
+	      ////////////////////////////////// Works
+		  
+		  
+		  //Managers Team
+		  Team team = teamRepository.findByTeamName(teamName);
+		  
+		  //ArrayList For Players she needs
+		  ArrayList<UserLogin> players =  new ArrayList<UserLogin>();
+
+		  
+		  //Checking all teams users positions and subtracting the position variables accordingly
+		   for(UserLogin ul : team.getUserLogins())
+			  {
+			   
+			   if (ul.getUserType().equals("Player"))
+				   
+			   {
+			   
+				  if(ul.getPlayerinfo().getPosition().equals("RightWing"))
+				  {
+				    wingers--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("LeftWing"))
+				  {
+				    wingers--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("FullBack"))
+				  {
+				    fullback--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("OutsideCentre"))
+				  {
+				    centres--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("InsideCentre"))
+				  {
+				    centres--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("OutHalf"))
+				  {
+				   outhalf--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("ScrumHalf"))
+				  {
+				    scrumhalf--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("Eight"))
+				  {
+				    backrow--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("OpenSideFlanker"))
+				  {
+				    backrow--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("BlindSideFlanker"))
+				  {
+				    backrow--;
+				  } 
+				  if(ul.getPlayerinfo().getPosition().equals("SecondRow"))  
+				  {
+					secondRow--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("LooseHead"))  
+				  {
+					props--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("Hooker"))  
+				  {
+					hooker--;
+				  }
+				  if(ul.getPlayerinfo().getPosition().equals("TightHead"))  
+				  {
+					props--;
+				  }
+				  
+			   }
+			  }/// End of loop recording the players positions etc.
+
+		   	  //idea behind below , if the position needs to be filled, pass the variable through model attribute, display above a search players index with players.playerinfo.getpositions showing
+			  if (  fullback >= 0 ) //&& position.equals("FullBack")
+			  {
+				 int recomAmountFB = 1; 
+				 String fullback2 = "FullBack";
+				 model.addAttribute("fullback", fullback2);
+				 model.addAttribute("fullbackNo", fullback);
+				 model.addAttribute("recomAmountFB", recomAmountFB);
+				 
+				 
+			  }
+			  if (wingers >= 0) //&& position.equals("RightWing")  || position.equals("LeftWing")
+			  {
+				  int recomAmountW = 3;
+				  String winger2 = "Wingers";
+				  model.addAttribute("winger", winger2);
+				  model.addAttribute("wingerNo", wingers);
+				  model.addAttribute("recomAmountW", recomAmountW);
+
+
+			  }
+			  if (  centres >= 0)// && (position.equals("InsideCentre") || position.equals("OutsideCentre") ))
+			  {
+				  int recomAmountC = 3;
+				  String centres2 = "Centres";
+				  model.addAttribute("centre", centres2);
+				  model.addAttribute("centreNo", centres);
+				  model.addAttribute("recomAmountC", recomAmountC);
+
+
+			  }
+			  if (  outhalf >= 0 )//&& position.equals("OutHalf") )
+			  {
+				  int recomAmountO = 1;
+				  String outhalf2 = "OutHalf";
+				  model.addAttribute("outhalf", outhalf2);
+				  model.addAttribute("outhalfNo", outhalf);
+				  model.addAttribute("recomAmountO", recomAmountO);
+
+			  }
+			  if (  scrumhalf >= 0)// && position.equals("ScrumHalf") )
+			  {
+				  int recomAmountS = 1;
+				  String scrumhalf2 = "ScrumHalf";
+				  model.addAttribute("scrumhalf", scrumhalf2);
+				  model.addAttribute("scrumhalfNo", scrumhalf);
+				  model.addAttribute("recomAmountS", recomAmountS);
+
+
+			  }
+			  if (  backrow >= 0) // && (position.equals("Eight") || position.equals("BlindSideFlanker") || position.equals("OpenSideFlanker") ))
+			  {
+				  int recomAmountB = 5;
+				  String backrow2 = "Backrows";
+				  model.addAttribute("backrow", backrow2);
+				  model.addAttribute("backrowNo", outhalf);
+				  model.addAttribute("recomAmountB", recomAmountB);
+
+
+			  }
+			  if ( secondRow >= 0)// && position.equals("SecondRow") )
+			  {
+				  int recomAmountSR = 3;
+				  String secondrow2 = "SecondRow";
+				  model.addAttribute("secondrow", secondrow2);
+				  model.addAttribute("secondrowNo", secondRow);
+				  model.addAttribute("recomAmountSR", recomAmountSR);
+
+
+			  }
+			  if (  props >= 0 )// && (position.equals("TightHead") || position.equals("LooseHead"))  )
+			  {
+				  int recomAmountP = 4;
+				  String prop2 = "Props";
+				  model.addAttribute("prop", prop2);
+				  model.addAttribute("propNo", props);
+				  model.addAttribute("recomAmountP", recomAmountP);
+
+
+			  }
+			  if (  hooker >= 0)// && position.equals("Hooker") )
+			  {
+				  int recomAmountH = 1;
+				  String hooker2 = "Hooker";
+				  model.addAttribute("hooker", hooker2);
+				  model.addAttribute("hookerNo", hooker);
+				  model.addAttribute("recomAmountH", recomAmountH);
+
+
+			  }  
+
+
+		return "neededPlayers";
+	}
+	
 
 }

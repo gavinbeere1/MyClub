@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class UserLogin {
 	
@@ -35,7 +37,7 @@ public class UserLogin {
 	private String position;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	private PlayerInfo playerinfo;
+	public PlayerInfo playerinfo;
 
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	public Set<Role> roles;

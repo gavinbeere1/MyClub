@@ -65,7 +65,7 @@
 	</div>
  <script type="text/javascript">
 
-  $(document).ready(function() {
+   $(document).ready(function() {
 		
 		// DO GET
 		$.ajax({
@@ -79,10 +79,10 @@
 										'<td>' + userLogin.firstName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.lastName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.userName + '</td>' +
-								
 										
-										'<td><a href="/viewplayer/'+userLogin.id+'">View Player</a></td>' +									  '</tr>';
-					
+															
+										'<td><a href="/viewplayer/'+userLogin.id+'">View Player</a></td>' +	 '</tr>';
+									
 					$('#customerTable tbody').append(customerRow);
 				
 		        });
@@ -97,14 +97,14 @@
 		});
 		
 		// do Filter on View
-		$("#inputFilter").on("keyup", function() {
+		 $("#inputFilter").on("keyup", function() {
 		    var inputValue = $(this).val().toLowerCase();
 		    $("#customerTable tr").filter(function() {
 		    	$(this).toggle($(this).text().toLowerCase().indexOf(inputValue) > -1)
 		    });
-		});
+		}); 
 	})
-
+ 
   </script>
 </body>
 </html>

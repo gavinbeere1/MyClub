@@ -34,27 +34,54 @@
  
     <a> <img src="images/logo.jpg"> </img></a>
  </div>
+	
 <center>
 <body>
-<h1> Manager </h1>
-   <a style="color:blue" th:href="@{/home}">HomeScreen!</a>
-    <br/>
-       <a style="color:blue" th:href="@{/showteams}">Show Teams</a>
-      <br/>
-       <a style="color:blue" th:href="@{/showplayers2}">Search for Players</a>
-         <br/>
-     <a style="color:blue" th:href="@{/showplayers}">Show Players</a>
-     <br/>
-     <a style="color:blue" th:href="@{/shownotifications}">View Inbox</a>
-     <br/>
- <a style="color:blue" th:href="@{/viewmyteam}">My Team</a>
-         <br/>
-          <a style="color:blue" th:href="@{/viewpositioninfo}">Team Position Info.</a>
-         <br/>
-</body>
 
- <form th:action="@{/logout}" method="post">
-         <input type="submit" value="Sign Out"/>
-     </form>
+ <div class="container">
+ 
+ 
+ 
+ 	<h3 style="color:blue">Notifications</h3>
+ 	
+ 
+ 	
+<table class = "table table-striped" id="teamTable">
+ 	
+ 	<tr>
+ 	
+ 	<th> User </th>
+ 	<th> Message Status </th>
+ 	
+ 	</tr>
+ 	
+ 	<tr th:each="inbox : ${outboxs}">
+ 	<td th:text="${inbox.senderName}"></td>
+ 	<td th:text="${inbox.status}"></td>
+ 	 
+ 	 <td>
+ 	<a th:href="@{/viewsender/{name}(name=${inbox.senderName})}"><span>View Player</span></a>
+ 	</td>
+	<td></td>
+	<td></td>
+ 	 <td>
+ 	<a th:href="@{/deletemessage/{name}(name=${inbox.status})}" th:if="${not #strings.startsWith(inbox.status, 'D')}" ><span>Decline Request</span></a>
+ 	</td>
+ 	
+ 	
+ 	
+ 
+ 	</tr>
+ 	</table>
+ 
+ </div>
+ 
+ <br />
+			<a style="color:blue" th:href="@{/showallmessages}"><span>Show Seen Notifications</span></a>
+	<br /><br />
+	          <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>			
+
+
+</body>
 </center>
 </html>
