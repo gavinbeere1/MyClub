@@ -609,7 +609,6 @@ public class HomeController {
 	   return "players";
 	   
    }
-
    @RequestMapping(value="/showplayers2", method=RequestMethod.GET)
    public String aYeh2()
    {

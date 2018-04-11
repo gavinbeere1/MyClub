@@ -38,7 +38,7 @@
  <p id="demo"></p>
 
 
-<div>
+
 <center>
 	<h3>Positions your team is lacking</h3>
     <br />
@@ -108,8 +108,8 @@
   
   
   </table>
-	<br /> 
-	
+	<br />  
+<div class="row col-md-7 " align="center"> 
 <div style="margin-bottom:20px; padding:10px; background-color:#336699; color:white;">
 		  	<p>Type some text to search the table for <strong>Id</strong>, <strong>Name</strong>, <strong>Address</strong>, <strong>Level</strong>:</p>  
 		  	<input class="form-control" id="inputFilter" type="text" placeholder="Search.." />
@@ -123,7 +123,8 @@
 						<th>Id</th>
 						<th>Name</th>
 						<th>Surname</th>
-						<th>Username</th>	
+						<th>Username</th>
+						<th>Position</th>	
 									
 										
 					</tr>
@@ -133,13 +134,13 @@
 			</table>
  	
  	      <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
- 	
+ 		
 	   <a style="color:blue" th:href="@{/welcome}">HomeScreen!</a>
 	   <br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
  	
-
-</center>	   	
 </div>
+</center>	   	
+
 
 <script type="text/javascript">
 
@@ -157,6 +158,8 @@
 										'<td>' + userLogin.firstName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.lastName.toUpperCase() + '</td>' +
 										'<td>' + userLogin.userName + '</td>' +
+										'<td>' + userLogin.playerinfo.position + '</td>' +
+										
 										
 															
 										'<td><a href="/viewplayer/'+userLogin.id+'">View Player</a></td>' +	 '</tr>';
